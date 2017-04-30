@@ -4,6 +4,19 @@ author: "Sahban Tariq Malik"
 date: "May 2, 2017"
 output: ioslides_presentation
 ---
+<style type="text/css">
+
+td {  /* Table  */
+font-size: 12px;
+}
+
+h2 { /* Header 2 */
+font-size: 36px;
+color: Black;
+}
+
+</style>
+
 ##Multi-criteria Decision Analysis
 
 To choose or obtain a ranking of several alternatives based
@@ -17,29 +30,28 @@ on more than one criteria
 
 ##Types of Criteria
 
-
 Different criteria are usually not in the same unit, making
 direct comparison implausible.
 
 * Qualitivative or ordinal criteria
-  + Relevance of project to current business
-      - High
-      - Medium
-      - Low
++ Relevance of project to current business
+- High
+- Medium
+- Low
 * Quantitative or cardinal criteria
-  + NPV of a project - in USD
-  + Cost of labor - in USD
-  + IRR - %
++ NPV of a project - in USD
++ Cost of labor - in USD
++ IRR - %
 
 ##Types of Criteria
 
 * Beneficial Criteria
-   + Higher value indicates better
-      - e.g. NPV, IRR
++ Higher value indicates better
+- e.g. NPV, IRR
 
 * Non-beneficial Criteria
-    + Higher value indicates worse
-      - e.g. Cost, Investment
++ Higher value indicates worse
+- e.g. Cost, Investment
 
 ##PROMETHEE
 
@@ -58,32 +70,35 @@ flow for final ranking
 
 - Additional information required to use PROMETHEE
 
-    + Information within each criterion
-      - Through a preference function that eliminates the
-      effect of scale and enables comparability between
-      criteria
++ Information within each criterion
+- Through a preference function that eliminates the
+effect of scale and enables comparability between
+criteria
 
-    + Information between the criteria
-      - Weights of relative importance
++ Information between the criteria
+- Weights of relative importance
 $\sum_{j=1}^k w_j =1$ where $k$ is the number
 of criteria
 
 
 ##PROMETHEE - PROBLEM
-
-Consider the following decision matrix:
-- Higher value of leverage ratio indicates higher risk:
-non-benificial criteria
-
-```{r echo = FALSE, results='asis'}
-library(knitr)
+```{r echo = FALSE, results='hide', message=FALSE, warning=FALSE}
 library(dplyr)
-data <- readxl::read_excel(
-  "stock_data.xlsx", skip = 6) %>%
-  kable(caption = "Decision Matrix")
-data
 ```
 
+```{r echo = FALSE}
+readxl::read_excel(
+  "stock_data.xlsx") %>% 
+  DT::datatable(extensions = 'FixedColumns',
+                options = list(
+                  dom = 't',
+                  scrollX = TRUE,
+                  scrollCollapse = TRUE)) %>% 
+  DT::formatPercentage(c(4,6,7,8), digits = 2) %>% 
+  DT::formatCurrency(c(2, 3), currency = "$")
+```
+
+Non-benificial criteria: Leverage Ratio 
 
 ##STEP 1: Normalize Decision Matrix
 
@@ -99,24 +114,36 @@ min(X_{ij})}$$
 
 ##STEP 1: Normalize Decision Matrix
 
-TABLE
+```{r echo = FALSE}
+data <- readxl::read_excel("data_no_space.xlsx") 
+beneficial_col <- colnames(data)[c(-1,-4)]
+promethee::normalize(data, beneficial_col) %>% 
+  DT::datatable(extensions = 'FixedColumns',
+                options = list(
+                  dom = 't',
+                  scrollX = TRUE,
+                  scrolly = TRUE, 
+                  scrollCollapse = TRUE)) %>% 
+  DT::formatRound(c(2:8), 3)
+```
+
 
 ##STEP 2: Preference Function
 
 - Pairwise comparisons
-    + $a\succ b$ if alternative $a$ dominates
-    $b$ for each criteria
-    + $a\sim b$ if alternative $a$ and $b$ have
-    same value for each criteria
++ $a\succ b$ if alternative $a$ dominates
+$b$ for each criteria
++ $a\sim b$ if alternative $a$ and $b$ have
+same value for each criteria
 - In practice, mostly pairwise comparisons are incomparable
-    + $a\succ b$ for some criteria while $a\prec b$
-    for others
-    + e.g. EIYAT $\succ$ GRNYO w.r.t. currency ratio and
-    cash ratio while GRNYO $\prec$ EIYAT w.r.t all other
-    criteria
++ $a\succ b$ for some criteria while $a\prec b$
+for others
++ e.g. EIYAT $\succ$ GRNYO w.r.t. currency ratio and
+cash ratio while GRNYO $\prec$ EIYAT w.r.t all other
+criteria
 - No single best way to objectively aggregate the information
 in all criteria
-  - The compromise solution depends on the individual "preferences"
+- The compromise solution depends on the individual "preferences"
 of each decision-maker
 
 
@@ -124,8 +151,8 @@ of each decision-maker
 
 - PROMETHEE methods belong to the class of outranking methods
 - Includes realistic enrichments of the dominance relation
-    + Provides reliable information in the presence of
-    incomparabilities
++ Provides reliable information in the presence of
+incomparabilities
 
 
 ##STEP 2: Preference Function
@@ -159,7 +186,8 @@ $$P(d) =
 
 Parameters: none
 
-![alt](1.png)
+# {.centered}
+![Usual Criterion](1.png)
 
 ##STEP 2: Preference Function
 
@@ -173,9 +201,10 @@ $$P(d) =
 
 Parameters:
 
-    q - threshold of indifference
+q - threshold of indifference
 
-![alt](2.png)
+# {.centered}
+![U-shape Criterion](2.png)
 
 ##STEP 2: Preference Function
 
@@ -191,9 +220,10 @@ $$P(d) =
 
 Parameters:
 
-    p - threshold of strict preference
+p - threshold of strict preference
 
-![alt](3.png)
+# {.centered}
+![V-shape Criterion](3.png)
 
 ##STEP 2: Preference Function
 
@@ -208,10 +238,11 @@ $$P(d) =
 
 Parameters:
 
-    q - threshold of indifference
-    p - threshold of strict preference
+q - threshold of indifference
+p - threshold of strict preference
 
-![alt](4.png)
+# {.centered}
+![Level Criterion](4.png)
 
 ##STEP 2: Preference Function
 
@@ -226,10 +257,11 @@ $$P(d) =
 
 Parameters:
 
-    q - threshold of indifference
-    p - threshold of strict preference
-***
-![alt](5.png)
+q - threshold of indifference
+p - threshold of strict preference
+
+# {.centered}
+![V-shape with indifference Criterion](5.png)
 
 ##STEP 2: Preference Function
 
@@ -243,24 +275,25 @@ $$P(d) =
 
 Parameters:
 
-    s - an intermediate value between q and p
-***
-![alt](6.png)
+s - an intermediate value between q and p
+
+# {.centered}
+![Gaussian Criterion](6.png)
 
 ##STEP 2: Preference Function
 
 Choosing the appropriate parameters is crucial, though easy
-- Indifference threshold (q) is the largest deviation which is
+* **Indifference threshold (q)** is the largest deviation which is
 considered as
 negligible by the decision maker
-- Preference threshold (p) is the smallest deviation which is
+* **Preference threshold (p)** is the smallest deviation which is
 considered as sufficient to generate a full preference
 
-- s defines the inflection point of the preference function.
-    + If s is close to q, preferences will be reinforced for
-    small deviations,
-    + If s is close to p, preferences will be softened for
-    small deviations
+* **s** defines the inflection point of the preference function.
++ If s is close to q, preferences will be reinforced for
+small deviations,
++ If s is close to p, preferences will be softened for
+small deviations
 
 ##STEP 2: Preference Function
 
@@ -297,46 +330,45 @@ $\pi(a,b)$ close to 1 implies a is strongly preferred over b
 + Each alternative $a$ faces $n-1$ other alternatives
 $\implies$ $n-1$ pairs $\pi(a,b)$  for any
 $a\in A$. We take their average to get outranking flows
-+ Positive outranking flow $\phi^+(a)$ - the power or outranking
-character of $a$
-  - Average of $\pi(a,x)$ for each $x\neq a \rightarrow$
-  $\phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
+**Positive outranking flow** of a $\phi^+(a)$
+- The power or outranking character of $a$
+- Average of $\pi(a,x)$ for each $x\neq a$ 
 
-  - It expresses how an alternative is outranking all the others
-  - The higher $\phi^+(a)$, the better the alternative
+$\rightarrow \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
 
-***
-+ Negative outranking flow of a - the weakness or outranked character
-of an a
-  - Average of $\pi(x,a)$ for each $x\neq a \rightarrow$
-  $\phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$
+- It expresses how an alternative is outranking all the others
+- The higher $\phi^+(a)$, the better the alternative
 
-  - It expresses how an alternative is outranked by all the others
-  - The lower $\phi^-(a)$, the better the alternative
+##STEP 4: Outranking Flows
+**Negative outranking flow** of a $\phi^+(a)$
+- The weakness or outranked character of $a$
+- Average of $\pi(x,a)$ for each $x\neq a \rightarrow$
+$\phi^-(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$
+
+- It expresses how an alternative is outranked by all the others
+- The lower $\phi^-(a)$, the better the alternative
 
 ##STEP 5: Partial Ranking PROMETHEE I
 
 - PROMETHEE I is the intersection of both positive and negative
 outranking flows
 
-$$\LARGE
-aPb \text{  iff }
+$$aPb \text{  iff }
 \begin{array}{cc}
 \phi^+(a)>\phi^+(b) \text{ & } \phi^-(a)\leq\phi^-(b)\\
 \phi^+(a)\geq\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)
 \end{array}$$
 
-$$\LARGE
-aIb \text{  iff }
-  \phi^+(a)=\phi^+(b) \text{ & } \phi^-(a)=\phi^-(b) $$
+$$aIb \text{  iff }
+\phi^+(a)=\phi^+(b) \text{ & } \phi^-(a)=\phi^-(b) $$
 
-$$\LARGE
-aRb \text{  iff }
- \begin{array}{cc}
-  \phi^+(a)>\phi^+(b) \text{ & } \phi^-(a)>\phi^-(b) \\
-  \phi^+(a)<\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)
- \end{array}$$
+$$aRb \text{  iff }
+\begin{array}{cc}
+\phi^+(a)>\phi^+(b) \text{ & } \phi^-(a)>\phi^-(b) \\
+\phi^+(a)<\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)
+\end{array}$$
 
+##STEP 5: Partial Ranking PROMETHEE I
 - Remember $\phi_+(a)$ is power of a and $\phi_-(a)$
 is weakness of a
 - a is preferred to b if a has higher power and/or lower weakness than
@@ -344,8 +376,8 @@ b
 - a and b are indifferent if both power and weakness are same
 - a and b are incomparable if a has higher power and higher weakness
 or vice versa
-    + Information provided by both flows is not consistent
-    + Deciding which alternative is better is upto the decision-maker
++ Information provided by both flows is not consistent
++ Deciding which alternative is better is upto the decision-maker
 
 
 ##STEP 5: Complete Ranking PROMETHEE II
@@ -357,15 +389,13 @@ $$\phi(a) = \phi^+(a) - \phi^-(a)$$
 - $\phi(a)$ is the net outranking flow, with the following
 properties
 
-$$-1 \leq \phi(a) \leq 1$$
-
-$$\sum_ {x\in A} \phi(a) \leq 1$$
+$-1 \leq \phi(a) \leq 1$ and $\sum_ {x\in A} \phi(a) \leq 1$
 where
 
-  + $\phi(a) > 0 \implies$ a is more outranking all alternatives
++ $\phi(a) > 0 \implies$ a is more outranking all alternatives
 
-  + $\phi(a) < 0 \implies$ a is more outranked by other
-  alternatives
++ $\phi(a) < 0 \implies$ a is more outranked by other
+alternatives
 
 - The higher the net flow, the better the alternative
 
