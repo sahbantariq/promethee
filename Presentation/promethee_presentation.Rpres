@@ -293,7 +293,11 @@ STEP 5: Partial Ranking PROMETHEE I
 - PROMETHEE I is the intersection of both positive and negative
 outranking flows
 
-![pi](prom1.png)
+$$aPb \text{ iff } \matrix(\phi^+(a)>\phi^+(b) \text{ & } \phi^-(a)\leq\phi^-(b) \phi^+(a)\geq\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)$$
+
+$$aPb \text{ iff }\phi^+(a)>\phi^+(b) \text{ & } \phi^-(a)\leq\phi^-(b)$$
+$$phi^+(a)\geq\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)$$
+
 
 - Remember pi_plus(a) is power of a and pi_minus(a) is weakness of a
 - a is preferred to b if a has higher power and/or lower weakness than
@@ -310,10 +314,23 @@ STEP 5: Complete Ranking PROMETHEE II
 - PROMETHEE II is the balance between positive and negative
 outranking flows
 
-        phi(a) = phi_plus - phi_minus
+$$\phi(a) = \phi^+(a) - \phi^-(a)$$
+- $\phi(a)$ is the net outranking flow, with the following properties
+$$-1 \leq \phi(a) \leq 1$$
+$$\sum_ {x\in A} \phi(a) \leq 1$$
+where
+
+$\phi(a) > 0 \implies$ a is more outranking all alternatives
+
+$\phi(a) < 0 \implies$ a is more outranked by other alternatives
+
 - The higher the net flow, the better the alternative
+
+
+STEP 5: Complete Ranking PROMETHEE II
+========================================================
+
 - No incomparabilities remain, but more information gets lost by
 considering the difference
-- phi relies on comparative statements rather than absolute statements
+- $\phi(a)$ relies on comparative statements rather than absolute statements
 - Recommended to use PROMETHEE I an II together for more information
-![pi](prom2.png)
