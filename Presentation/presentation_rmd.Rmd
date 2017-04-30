@@ -84,16 +84,19 @@ of criteria
 ##PROMETHEE - PROBLEM
 ```{r echo = FALSE, results='hide', message=FALSE, warning=FALSE}
 library(dplyr)
+datatableformat <- function(data) {
+  DT::datatable(data, rownames = FALSE, extensions = 'FixedColumns',
+                options = list(
+                  dom = 't',
+                  scrollX = TRUE,
+                  scrollCollapse = TRUE))
+}
 ```
 
 ```{r echo = FALSE}
 readxl::read_excel(
   "stock_data.xlsx") %>% 
-  DT::datatable(extensions = 'FixedColumns',
-                options = list(
-                  dom = 't',
-                  scrollX = TRUE,
-                  scrollCollapse = TRUE)) %>% 
+  datatableformat() %>% 
   DT::formatPercentage(c(4,6,7,8), digits = 2) %>% 
   DT::formatCurrency(c(2, 3), currency = "$")
 ```
@@ -118,14 +121,10 @@ min(X_{ij})}$$
 data <- readxl::read_excel("data_no_space.xlsx") 
 beneficial_col <- colnames(data)[c(-1,-4)]
 promethee::normalize(data, beneficial_col) %>% 
-  DT::datatable(extensions = 'FixedColumns',
-                options = list(
-                  dom = 't',
-                  scrollX = TRUE,
-                  scrolly = TRUE, 
-                  scrollCollapse = TRUE)) %>% 
+  datatableformat() %>% 
   DT::formatRound(c(2:8), 3)
 ```
+
 
 
 ##STEP 2: Preference Function
@@ -295,9 +294,27 @@ small deviations,
 + If s is close to p, preferences will be softened for
 small deviations
 
-##STEP 2: Preference Function
+##STEP 2: Pairwise Difference
 
-TABLE
+```{r echo = FALSE}
+data <- readxl::read_excel("data_no_space.xlsx") 
+beneficial_col <- colnames(data)[c(-1,-4)]
+weights <- rep(100/7, 7)
+
+promethee::normalize(data, beneficial_col) %>% 
+  promethee::row_wise_difference() %>% 
+  datatableformat() %>% 
+  DT::formatRound(c(3:9), 3)
+```
+
+##STEP 2: Preference Function
+```{r echo = FALSE}
+promethee::normalize(data, beneficial_col) %>% 
+  promethee::row_wise_difference() %>% 
+  promethee::pref_func("usual") %>% 
+  datatableformat() %>% 
+  DT::formatRound(c(3:9), 3)
+```
 
 ##STEP 3: Aggregated Preference Function
 
@@ -328,10 +345,12 @@ $\pi(a,b)$ close to 1 implies a is strongly preferred over b
 ##STEP 4: Outranking Flows
 
 + Each alternative $a$ faces $n-1$ other alternatives
-$\implies$ $n-1$ pairs $\pi(a,b)$  for any
-$a\in A$. We take their average to get outranking flows
+
+$\implies$ $n-1$ pairs $\pi(a,b)$  for any $a\in A$. 
+
+We take their average to get outranking flows
 **Positive outranking flow** of a $\phi^+(a)$
-- The power or outranking character of $a$
+- The power or  outranking character of $a$
 - Average of $\pi(a,x)$ for each $x\neq a$ 
 
 $\rightarrow \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
@@ -339,7 +358,15 @@ $\rightarrow \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
 - It expresses how an alternative is outranking all the others
 - The higher $\phi^+(a)$, the better the alternative
 
-##STEP 4: Outranking Flows
+##STEP 4: Positive Outranking Flows
+```{r echo = FALSE}
+outranking <- promethee::flow(
+  data, beneficial_col, "usual", rep(100/7, 7))$outranking_data
+
+datatableformat(outranking$positive)
+```
+
+##STEP 4: Negative Outranking Flows
 **Negative outranking flow** of a $\phi^+(a)$
 - The weakness or outranked character of $a$
 - Average of $\pi(x,a)$ for each $x\neq a \rightarrow$
@@ -347,6 +374,12 @@ $\phi^-(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$
 
 - It expresses how an alternative is outranked by all the others
 - The lower $\phi^-(a)$, the better the alternative
+
+##STEP 4: Negative Outranking Flows
+```{r echo = FALSE}
+datatableformat(outranking$negative)
+```
+
 
 ##STEP 5: Partial Ranking PROMETHEE I
 
@@ -399,9 +432,15 @@ alternatives
 
 - The higher the net flow, the better the alternative
 
+##STEP 5: Complete Ranking PROMETHEE II
+```{r echo = FALSE}
+promethee::flow(data, beneficial_col, "usual", rep(100/7, 7)) %>% 
+  .$outranking_aggregate_data %>% 
+  datatableformat()
+```
+
 
 ##STEP 5: Complete Ranking PROMETHEE II
-
 
 - No incomparabilities remain, but more information gets lost by
 considering the difference
