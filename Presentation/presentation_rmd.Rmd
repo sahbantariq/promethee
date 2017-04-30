@@ -402,6 +402,12 @@ $$aRb \text{  iff }
 \end{array}$$
 
 ##STEP 5: Partial Ranking PROMETHEE I
+```{r}
+promethee::promethee_one(data, beneficial_col, "usual", weights) %>% 
+  datatableformat()
+```
+
+##STEP 5: Partial Ranking PROMETHEE I
 - Remember $\phi_+(a)$ is power of a and $\phi_-(a)$
 is weakness of a
 - a is preferred to b if a has higher power and/or lower weakness than
