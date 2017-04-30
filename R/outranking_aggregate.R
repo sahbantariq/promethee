@@ -2,19 +2,21 @@
 #'
 #' @export
 outranking_aggregate <- function(outranking_data, wt_matrix){
-  phi_aggregate_plus <- rowSums(
-    outranking_data$positive[,c(-1, -2)] * wt_matrix) %>%
+  outranking_positive <- outranking_data$positive[c(-1,-2)] %>%  as.matrix()
+  outranking_negative <- outranking_data$negative[c(-1,-2)] %>%  as.matrix()
+  wt_matrix <- wt_matrix %>% as.matrix()
+
+  phi_aggregate_plus <- outranking_positive %*% wt_matrix %>%
     as.data.frame() %>%
-    dplyr::rename(., Entering_Flow = .) %>%
+    dplyr::rename(Entering_Flow = V1) %>%
     dplyr::mutate_(id = ~ as.data.frame(data)[,1]) %>%
     dplyr::select_("id", "Entering_Flow") %>%
     dplyr::rename_(.dots = setNames("id",
                                     colnames(data)[1]))
 
-  phi_aggregate_minus <- rowSums(
-    outranking_data$negative[,c(-1, -2)] * wt_matrix) %>%
+  phi_aggregate_minus <- outranking_negative %*% wt_matrix %>%
     as.data.frame() %>%
-    dplyr::rename(., Leaving_Flow = .) %>%
+    dplyr::rename(Leaving_Flow = V1) %>%
     dplyr::mutate_(id = ~ as.data.frame(data)[,1]) %>%
     dplyr::select_("id", "Leaving_Flow") %>%
     dplyr::rename_(.dots = setNames("id",
