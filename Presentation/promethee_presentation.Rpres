@@ -66,7 +66,7 @@ PROMETHEE
 
     + Information between the criteria
       - Weights of relative importance
-$\LARGE \sum_{j=1}^k w_j =1$ where $\LARGE k$ is the number
+$\sum_{j=1}^k w_j =1$ where $k$ is the number
 of criteria
 
 
@@ -91,11 +91,11 @@ STEP 1: Normalize Decision Matrix
 1. Normalize the decision matrix by using the following formula
 
 For benificial criteria:
-$$\LARGE R_{ij} = \frac{X_{ij} - min(X_{ij})}{max(X_{ij}) -
+$$R_{ij} = \frac{X_{ij} - min(X_{ij})}{max(X_{ij}) -
 min(X_{ij})}$$
 
 For non-benificial criteria:
-$$\LARGE R_{ij} = \frac{max(X_{ij})-X_{ij}}{max(X_{ij}) -
+$$R_{ij} = \frac{max(X_{ij})-X_{ij}}{max(X_{ij}) -
 min(X_{ij})}$$
 
 STEP 1: Normalize Decision Matrix
@@ -105,15 +105,15 @@ TABLE
 STEP 2: Preference Function
 ========================================================
 - Pairwise comparisons
-    + $\LARGE a\succ b$ if alternative $\LARGE a$ dominates
-    $\LARGE b$ for each criteria
-    + $\LARGE a\sim b$ if alternative $\LARGE a$ and $\LARGE b$ have
+    + $a\succ b$ if alternative $a$ dominates
+    $b$ for each criteria
+    + $a\sim b$ if alternative $a$ and $b$ have
     same value for each criteria
 - In practice, mostly pairwise comparisons are incomparable
-    + $\LARGE a\succ b$ for some criteria while $\LARGE a\prec b$
+    + $a\succ b$ for some criteria while $a\prec b$
     for others
-    + e.g. EIYAT $\LARGE \succ$ GRNYO w.r.t. currency ratio and
-    cash ratio while GRNYO $\LARGE \prec$ EIYAT w.r.t all other
+    + e.g. EIYAT $\succ$ GRNYO w.r.t. currency ratio and
+    cash ratio while GRNYO $\prec$ EIYAT w.r.t all other
     criteria
 - No single best way to objectively aggregate the information
 in all criteria
@@ -133,17 +133,17 @@ STEP 2: Preference Function
 ========================================================
 - Deviation between two alternatives on a particular criteria j
 
-$$\LARGE d_j(a,b)=g_j(a)-g_j(b)$$
+$$d_j(a,b)=g_j(a)-g_j(b)$$
 
-- Define a preference function $\LARGE P_j(.,.)$ based on pairwise
+- Define a preference function $P_j(.,.)$ based on pairwise
 deviations
 
-$\LARGE P_j(a,b)=F_j[d_j(a,b)]$ for any pair of alternatives
-$\LARGE a,b$
+$P_j(a,b)=F_j[d_j(a,b)]$ for any pair of alternatives
+$a,b$
 
-$\LARGE P_j(a,b)\neq P_j(b,a)$
+$P_j(a,b)\neq P_j(b,a)$
 
-$\LARGE P_j(a,b) > 0 \implies P_j(b,a)=0$
+$P_j(a,b) > 0 \implies P_j(b,a)=0$
 
 Six types of particular preference functions have been
 proposed by J.P. Brans
@@ -152,7 +152,7 @@ STEP 2: Preference Function
 ========================================================
 Type 1: Usual Criterion
 
-$$\LARGE P(d) =
+$$P(d) =
 \begin{array}{cc}
 0 \text{ if } d\leq 0\\
 1 \text{ if } d>0
@@ -166,7 +166,7 @@ STEP 2: Preference Function
 ========================================================
 Type 2: U-shape Criterion
 
-$$\LARGE P(d) =
+$$P(d) =
 \begin{array}{cc}
 0 \text{ if } d\leq q\\
 1 \text{ if } d>q
@@ -183,7 +183,7 @@ STEP 2: Preference Function
 Type 3: V-shape Criterion
 
 
-$$\LARGE P(d) =
+$$P(d) =
 \begin{array}{cc}
 0 \text{ if } d\leq 0\\
 {\frac{d}{p}} \text{ if } 0 < d\leq p\\
@@ -200,18 +200,13 @@ STEP 2: Preference Function
 ========================================================
 Type 4: Level Criterion
 
-$$\LARGE P(d) =
+$$P(d) =
 \begin{array}{cc}
 0 \text{ if } d\leq q\\
 {\frac{1}{2}} \text{ if } q < d\leq p\\
 1 \text{ if } d>p
 \end{array}$$
 
-P(d) =
-
-      0 if d <= q
-      1/2 if q<d<=p
-      1 if d > p
 Parameters:
 
     q - threshold of indifference
@@ -223,7 +218,7 @@ STEP 2: Preference Function
 ========================================================
 Type 5: V-shape with indifference Criterion
 
-$$\LARGE P(d) =
+$$P(d) =
 \begin{array}{cc}
 0 \text{ if } d\leq \text{q}\\
 {\frac{d-q}{p-q}} \text{ if } q < d\leq p\\
@@ -241,7 +236,7 @@ STEP 2: Preference Function
 ========================================================
 Type 6: Gaussian Criterion
 
-$$\LARGE P(d) =
+$$P(d) =
 \begin{array}{cc}
 0 \text{ if } d\leq 0\\
 1-e^{\frac{d^2}{2s^2}} \text{ if } d>0
@@ -279,46 +274,46 @@ assigning weights.
 
 The aggregated preference function is given by:
 
-$$\LARGE \pi(a,b)=\sum_{j=1}^k P_j(a,b)w_j$$
-$$\LARGE \pi(b,a)=\sum_{j=1}^k P_j(b,a)w_j$$
+$$\pi(a,b)=\sum_{j=1}^k P_j(a,b)w_j$$
+$$\pi(b,a)=\sum_{j=1}^k P_j(b,a)w_j$$
 
-$\LARGE \pi(a,b)$ expresses with which degree $\LARGE a$ is preferred
-to $\LARGE b$
+$\pi(a,b)$ expresses with which degree $a$ is preferred
+to $b$
 over all the criteria
 
-$\LARGE \pi(b,a)$ expressses how $\LARGE b$ is preferred to $\LARGE a$
+$\pi(b,a)$ expressses how $b$ is preferred to $a$
 
 STEP 3: Aggregated Preference Function
 ========================================================
-General properties of the aggregated preference function $\LARGE \pi(a,b)$
-$$\LARGE \pi(a,a)=0$$
-$$\LARGE 0\leq\pi(a,b)\leq 1$$
-$$\LARGE 0\leq\pi(b,a)\leq 1$$
-$$\LARGE 0\leq\pi(a,b)+\pi(b,a)\leq 1$$
+General properties of the aggregated preference function $\pi(a,b)$
+$$\pi(a,a)=0$$
+$$0\leq\pi(a,b)\leq 1$$
+$$0\leq\pi(b,a)\leq 1$$
+$$0\leq\pi(a,b)+\pi(b,a)\leq 1$$
 
-$\LARGE \pi(a,b)$ close to 0 implies a is weakly preferred over b
+$\pi(a,b)$ close to 0 implies a is weakly preferred over b
 
-$\LARGE \pi(a,b)$ close to 1 implies a is strongly preferred over b
+$\pi(a,b)$ close to 1 implies a is strongly preferred over b
 
 STEP 4: Outranking Flows
 ========================================================
-+ Each alternative $\LARGE a$ faces $\LARGE n-1$ other alternatives
-$\LARGE \implies$ $\LARGE n-1$ pairs $\LARGE \pi(a,b)$  for any
-$\LARGE a\in A$. We take their average to get outranking flows
-+ Positive outranking flow $\LARGE \phi^+(a)$ - the power or outranking
-character of $\LARGE a$
-  - Average of $\LARGE \pi(a,x)$ for each $\LARGE x\neq a \rightarrow$
-  $\LARGE \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
++ Each alternative $a$ faces $n-1$ other alternatives
+$\implies$ $n-1$ pairs $\pi(a,b)$  for any
+$a\in A$. We take their average to get outranking flows
++ Positive outranking flow $\phi^+(a)$ - the power or outranking
+character of $a$
+  - Average of $\pi(a,x)$ for each $x\neq a \rightarrow$
+  $\phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
 
   - It expresses how an alternative is outranking all the others
-  - The higher $\LARGE \phi^+(a)$, the better the alternative
+  - The higher $\phi^+(a)$, the better the alternative
 + Negative outranking flow of a - the weakness or outranked character
 of an a
-  - Average of $\LARGE \pi(x,a)$ for each $\LARGE x\neq a \rightarrow$
-  $\LARGE \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$
+  - Average of $\pi(x,a)$ for each $x\neq a \rightarrow$
+  $\phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$
 
   - It expresses how an alternative is outranked by all the others
-  - The lower $\LARGE \phi^-(a)$, the better the alternative
+  - The lower $\phi^-(a)$, the better the alternative
 
 STEP 5: Partial Ranking PROMETHEE I
 ========================================================
@@ -343,7 +338,7 @@ aRb \text{  iff }
   \phi^+(a)<\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)
  \end{array}$$
 
-- Remember $\LARGE \phi_+(a)$ is power of a and $\LARGE \phi_-(a)$
+- Remember $\phi_+(a)$ is power of a and $\phi_-(a)$
 is weakness of a
 - a is preferred to b if a has higher power and/or lower weakness than
 b
@@ -359,18 +354,18 @@ STEP 5: Complete Ranking PROMETHEE II
 - PROMETHEE II is the balance between positive and negative
 outranking flows
 
-$$\LARGE \phi(a) = \phi^+(a) - \phi^-(a)$$
-- $\LARGE \phi(a)$ is the net outranking flow, with the following
+$$\phi(a) = \phi^+(a) - \phi^-(a)$$
+- $\phi(a)$ is the net outranking flow, with the following
 properties
 
-$$\LARGE -1 \leq \phi(a) \leq 1$$
+$$-1 \leq \phi(a) \leq 1$$
 
-$$\LARGE \sum_ {x\in A} \phi(a) \leq 1$$
+$$\sum_ {x\in A} \phi(a) \leq 1$$
 where
 
-  + $\LARGE \phi(a) > 0 \implies$ a is more outranking all alternatives
+  + $\phi(a) > 0 \implies$ a is more outranking all alternatives
 
-  + $\LARGE \phi(a) < 0 \implies$ a is more outranked by other
+  + $\phi(a) < 0 \implies$ a is more outranked by other
   alternatives
 
 - The higher the net flow, the better the alternative
@@ -381,6 +376,6 @@ STEP 5: Complete Ranking PROMETHEE II
 
 - No incomparabilities remain, but more information gets lost by
 considering the difference
-- $\LARGE \phi(a)$ relies on comparative statements rather than
+- $\phi(a)$ relies on comparative statements rather than
 absolute statements
 - Recommended to use PROMETHEE I an II together for more information
