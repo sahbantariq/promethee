@@ -19,7 +19,6 @@ pref_func <- function(row_wise_difference,
            row_wise_difference, c(-1,-2), function(x) ifelse(x <= q, 0, 1)),
          "v-shape" = dplyr::mutate_at(
            row_wise_difference, c(-1,-2), function(x) ifelse(
-             x <= 0, 0, ifelse((x >= 0 & x <= p), x/p, 1))),
          "level" = dplyr::mutate_at(
            row_wise_difference, c(-1,-2), function(x) ifelse(
              x <= q, 0, ifelse((x > q & x <= p), 1/2, 1))),
