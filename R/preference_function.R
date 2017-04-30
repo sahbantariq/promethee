@@ -10,8 +10,6 @@ pref_func <- function(row_wise_difference,
                       preference_function = "simple", p = 1,
                       q = 0 , s = 0.5) {
 
-  gaussian <- exp(1)^(-(d^2)/2*(s^2))
-
   switch(preference_function,
          "simple" = dplyr::mutate_at(
            row_wise_difference, c(-1,-2), function(x) ifelse(x > 0, x, 0)),
@@ -21,14 +19,13 @@ pref_func <- function(row_wise_difference,
            row_wise_difference, c(-1,-2), function(x) ifelse(x <= q, 0, 1)),
          "v-shape" = dplyr::mutate_at(
            row_wise_difference, c(-1,-2), function(x) ifelse(
-             x <= 0, 0, ifelse((x >= 0 & x <= p), d/p, 1))),
          "level" = dplyr::mutate_at(
            row_wise_difference, c(-1,-2), function(x) ifelse(
              x <= q, 0, ifelse((x > q & x <= p), 1/2, 1))),
          "v-shape-indifference" = dplyr::mutate_at(
            row_wise_difference, c(-1,-2), function(x) ifelse(
-             x <= q, 0, ifelse((x > q & x <= p), (d-q)/(p-q), 1))),
+             x <= q, 0, ifelse((x > q & x <= p), (x-q)/(p-q), 1))),
          "gaussian" = dplyr::mutate_at(
            row_wise_difference, c(-1,-2),
-           function(x) ifelse(x <= 0, 0, gaussian)))
+           function(x) ifelse(x <= 0, 0, exp(1)^(-(x^2)/2*(s^2)))))
 }

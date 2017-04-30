@@ -1,0 +1,379 @@
+PROMETHEE
+========================================================
+author: Sahban Tariq Malik
+date: May 2, 2017
+autosize: true
+
+Multi-criteria Decision Analysis
+========================================================
+
+To choose or obtain a ranking of several alternatives based
+on more than one criteria
+
+| Alternative | C1 | C2 | C3 | C4 |
+|------:|------:|:-----|---------|:------:|
+| Project 1 |   12  |  12  |    12   |    12  |
+| Project 2 |  123  |  123 |   123   |   123  |
+| Project 3 |    1  |    1 |     1   |     1  |
+
+Types of Criteria
+========================================================
+
+Different criteria are usually not in the same unit, making
+direct comparison implausible.
+
+* Qualitivative or ordinal criteria
+  + Relevance of project to current business
+      - High
+      - Medium
+      - Low
+* Quantitative or cardinal criteria
+  + NPV of a project - in USD
+  + Cost of labor - in USD
+  + IRR - %
+
+Types of Criteria
+========================================================
+* Beneficial Criteria
+   + Higher value indicates better
+      - e.g. NPV, IRR
+
+* Non-beneficial Criteria
+    + Higher value indicates worse
+      - e.g. Cost, Investment
+
+PROMETHEE
+========================================================
+Preference Ranking Organization Method for Enrichment of
+Evaluations
+
+- Developed by J.P. Brans and presented for the first time
+in 1982 at a conference organised by R. Nadeau and M. Landry
+at the Universite Laval, Quebec, Canada
+- Obtains a preference function based on pairwise
+differences for each criteria
+- Aggregates using criteria weights to get net outranking
+flow for final ranking
+
+PROMETHEE
+========================================================
+- Additional information required to use PROMETHEE
+
+    + Information within each criterion
+      - Through a preference function that eliminates the
+      effect of scale and enables comparability between
+      criteria
+
+    + Information between the criteria
+      - Weights of relative importance
+$\sum_{j=1}^k w_j =1$ where $k$ is the number
+of criteria
+
+
+PROMETHEE - PROBLEM
+========================================================
+Consider the following decision matrix:
+- Higher value of leverage ratio indicates higher risk:
+non-benificial criteria
+
+
+|GRNYO | 100|  99.59| 9.0999999999999998E-2| 29.06| 4.1000000000000002E-2| 0.128| 3.6900000000000002E-2|
+|:-----|---:|------:|---------------------:|-----:|---------------------:|-----:|---------------------:|
+|ISYAT | 780|  32.01|                 0.078| 39.98|                 0.051| 0.185|                0.0501|
+|OYAYO | 767| 138.70|                 0.109| 22.68|                 0.029| 0.056|                0.0237|
+|VKFYO | 701| 121.99|                 0.102| 28.88|                 0.034| 0.078|                0.0289|
+
+
+STEP 1: Normalize Decision Matrix
+========================================================
+1. Normalize the decision matrix by using the following formula
+
+For benificial criteria:
+$$R_{ij} = \frac{X_{ij} - min(X_{ij})}{max(X_{ij}) -
+min(X_{ij})}$$
+
+For non-benificial criteria:
+$$R_{ij} = \frac{max(X_{ij})-X_{ij}}{max(X_{ij}) -
+min(X_{ij})}$$
+
+STEP 1: Normalize Decision Matrix
+========================================================
+TABLE
+
+STEP 2: Preference Function
+========================================================
+- Pairwise comparisons
+    + $a\succ b$ if alternative $a$ dominates
+    $b$ for each criteria
+    + $a\sim b$ if alternative $a$ and $b$ have
+    same value for each criteria
+- In practice, mostly pairwise comparisons are incomparable
+    + $a\succ b$ for some criteria while $a\prec b$
+    for others
+    + e.g. EIYAT $\succ$ GRNYO w.r.t. currency ratio and
+    cash ratio while GRNYO $\prec$ EIYAT w.r.t all other
+    criteria
+- No single best way to objectively aggregate the information
+in all criteria
+  - The compromise solution depends on the individual "preferences"
+of each decision-maker
+
+
+STEP 2: Preference Function
+========================================================
+- PROMETHEE methods belong to the class of outranking methods
+- Includes realistic enrichments of the dominance relation
+    + Provides reliable information in the presence of
+    incomparabilities
+
+
+STEP 2: Preference Function
+========================================================
+- Deviation between two alternatives on a particular criteria j
+
+$$d_j(a,b)=g_j(a)-g_j(b)$$
+
+- Define a preference function $P_j(.,.)$ based on pairwise
+deviations
+
+$P_j(a,b)=F_j[d_j(a,b)]$ for any pair of alternatives
+$a,b$
+
+$P_j(a,b)\neq P_j(b,a)$
+
+$P_j(a,b) > 0 \implies P_j(b,a)=0$
+
+Six types of particular preference functions have been
+proposed by J.P. Brans
+
+STEP 2: Preference Function
+========================================================
+Type 1: Usual Criterion
+
+$$P(d) =
+\begin{array}{cc}
+0 \text{ if } d\leq 0\\
+1 \text{ if } d>0
+\end{array}$$
+
+Parameters: none
+***
+![alt](1.png)
+
+STEP 2: Preference Function
+========================================================
+Type 2: U-shape Criterion
+
+$$P(d) =
+\begin{array}{cc}
+0 \text{ if } d\leq q\\
+1 \text{ if } d>q
+\end{array}$$
+
+Parameters:
+
+    q - threshold of indifference
+***
+![alt](2.png)
+
+STEP 2: Preference Function
+========================================================
+Type 3: V-shape Criterion
+
+
+$$P(d) =
+\begin{array}{cc}
+0 \text{ if } d\leq 0\\
+{\frac{d}{p}} \text{ if } 0 < d\leq p\\
+1 \text{ if } d>p
+\end{array}$$
+
+Parameters:
+
+    p - threshold of strict preference
+***
+![alt](3.png)
+
+STEP 2: Preference Function
+========================================================
+Type 4: Level Criterion
+
+$$P(d) =
+\begin{array}{cc}
+0 \text{ if } d\leq q\\
+{\frac{1}{2}} \text{ if } q < d\leq p\\
+1 \text{ if } d>p
+\end{array}$$
+
+Parameters:
+
+    q - threshold of indifference
+    p - threshold of strict preference
+***
+![alt](4.png)
+
+STEP 2: Preference Function
+========================================================
+Type 5: V-shape with indifference Criterion
+
+$$P(d) =
+\begin{array}{cc}
+0 \text{ if } d\leq \text{q}\\
+{\frac{d-q}{p-q}} \text{ if } q < d\leq p\\
+1 \text{ if } d>p
+\end{array}$$
+
+Parameters:
+
+    q - threshold of indifference
+    p - threshold of strict preference
+***
+![alt](5.png)
+
+STEP 2: Preference Function
+========================================================
+Type 6: Gaussian Criterion
+
+$$P(d) =
+\begin{array}{cc}
+0 \text{ if } d\leq 0\\
+1-e^{\frac{d^2}{2s^2}} \text{ if } d>0
+\end{array}$$
+
+Parameters:
+
+    s - an intermediate value between q and p
+***
+![alt](6.png)
+
+STEP 2: Preference Function
+========================================================
+Choosing the appropriate parameters is crucial, though easy
+- Indifference threshold (q) is the largest deviation which is
+considered as
+negligible by the decision maker
+- Preference threshold (p) is the smallest deviation which is
+considered as sufficient to generate a full preference
+
+- s defines the inflection point of the preference function.
+    + If s is close to q, preferences will be reinforced for
+    small deviations,
+    + If s is close to p, preferences will be softened for
+    small deviations
+
+STEP 2: Preference Function
+========================================================
+TABLE
+
+STEP 3: Aggregated Preference Function
+========================================================
+The preference functions for criteria are aggregated by
+assigning weights.
+
+The aggregated preference function is given by:
+
+$$\pi(a,b)=\sum_{j=1}^k P_j(a,b)w_j$$
+$$\pi(b,a)=\sum_{j=1}^k P_j(b,a)w_j$$
+
+$\pi(a,b)$ expresses with which degree $a$ is preferred
+to $b$
+over all the criteria
+
+$\pi(b,a)$ expressses how $b$ is preferred to $a$
+
+STEP 3: Aggregated Preference Function
+========================================================
+General properties of the aggregated preference function $\pi(a,b)$
+$$\pi(a,a)=0$$
+$$0\leq\pi(a,b)\leq 1$$
+$$0\leq\pi(b,a)\leq 1$$
+$$0\leq\pi(a,b)+\pi(b,a)\leq 1$$
+
+$\pi(a,b)$ close to 0 implies a is weakly preferred over b
+
+$\pi(a,b)$ close to 1 implies a is strongly preferred over b
+
+STEP 4: Outranking Flows
+========================================================
++ Each alternative $a$ faces $n-1$ other alternatives
+$\implies$ $n-1$ pairs $\pi(a,b)$  for any
+$a\in A$. We take their average to get outranking flows
++ Positive outranking flow $\phi^+(a)$ - the power or outranking
+character of $a$
+  - Average of $\pi(a,x)$ for each $x\neq a \rightarrow$
+  $\phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
+
+  - It expresses how an alternative is outranking all the others
+  - The higher $\phi^+(a)$, the better the alternative
++ Negative outranking flow of a - the weakness or outranked character
+of an a
+  - Average of $\pi(x,a)$ for each $x\neq a \rightarrow$
+  $\phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$
+
+  - It expresses how an alternative is outranked by all the others
+  - The lower $\phi^-(a)$, the better the alternative
+
+STEP 5: Partial Ranking PROMETHEE I
+========================================================
+- PROMETHEE I is the intersection of both positive and negative
+outranking flows
+
+$$\LARGE
+aPb \text{  iff }
+\begin{array}{cc}
+\phi^+(a)>\phi^+(b) \text{ & } \phi^-(a)\leq\phi^-(b)\\
+\phi^+(a)\geq\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)
+\end{array}$$
+
+$$\LARGE
+aIb \text{  iff }
+  \phi^+(a)=\phi^+(b) \text{ & } \phi^-(a)=\phi^-(b) $$
+
+$$\LARGE
+aRb \text{  iff }
+ \begin{array}{cc}
+  \phi^+(a)>\phi^+(b) \text{ & } \phi^-(a)>\phi^-(b) \\
+  \phi^+(a)<\phi^+(b) \text{ & } \phi^-(a)<\phi^-(b)
+ \end{array}$$
+
+- Remember $\phi_+(a)$ is power of a and $\phi_-(a)$
+is weakness of a
+- a is preferred to b if a has higher power and/or lower weakness than
+b
+- a and b are indifferent if both power and weakness are same
+- a and b are incomparable if a has higher power and higher weakness
+or vice versa
+    + Information provided by both flows is not consistent
+    + Deciding which alternative is better is upto the decision-maker
+
+
+STEP 5: Complete Ranking PROMETHEE II
+========================================================
+- PROMETHEE II is the balance between positive and negative
+outranking flows
+
+$$\phi(a) = \phi^+(a) - \phi^-(a)$$
+- $\phi(a)$ is the net outranking flow, with the following
+properties
+
+$$-1 \leq \phi(a) \leq 1$$
+
+$$\sum_ {x\in A} \phi(a) \leq 1$$
+where
+
+  + $\phi(a) > 0 \implies$ a is more outranking all alternatives
+
+  + $\phi(a) < 0 \implies$ a is more outranked by other
+  alternatives
+
+- The higher the net flow, the better the alternative
+
+
+STEP 5: Complete Ranking PROMETHEE II
+========================================================
+
+- No incomparabilities remain, but more information gets lost by
+considering the difference
+- $\phi(a)$ relies on comparative statements rather than
+absolute statements
+- Recommended to use PROMETHEE I an II together for more information
