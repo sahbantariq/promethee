@@ -4,13 +4,13 @@
 #'
 #' @export
 promethee_one <- function(data, beneficial_col, preference_function,
-                          weights) {
+                          weights, p = 1, q = 0, s = 0.5) {
 
   alternative <- colnames(data)[1]
 
-  flow <- promethee::flow(data,
-                          beneficial_col,
-                          "simple", weights)$outranking_aggregate_data %>%
+  flow <- promethee::flow(
+    data, beneficial_col, preference_function,
+    weights, p, q, s)$outranking_aggregate_data %>%
     select_("-Net_Flow", "-Rank")
 
   comb <- gtools::combinations(nrow(flow), 2, flow[,1]) %>%
