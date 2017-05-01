@@ -3,14 +3,14 @@
 #' @export
 flow <- function(data, beneficial_col,
                  preference_function = "simple",
-                 weights) {
+                 weights, p = 1, q = 0, s = 0.5) {
   normalized_data <- data %>%
     normalize(beneficial_col) %>%
     mutate_if(is.double, function(x) round(x, 2))
 
   prefer_func_data <-  normalized_data %>%
     row_wise_difference() %>%
-    pref_func(preference_function = preference_function) %>%
+    pref_func(preference_function = preference_function, p, q, s) %>%
     mutate_if(is.double, function(x) round(x, 2))
 
   outranking <- prefer_func_data %>%
