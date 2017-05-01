@@ -34,24 +34,24 @@ Different criteria are usually not in the same unit, making
 direct comparison implausible.
 
 * Qualitivative or ordinal criteria
-+ Relevance of project to current business
-- High
-- Medium
-- Low
+    + Relevance of project to current business
+        - High
+        - Medium
+        - Low
 * Quantitative or cardinal criteria
-+ NPV of a project - in USD
-+ Cost of labor - in USD
-+ IRR - %
+    + NPV of a project - in USD
+    + Cost of labor - in USD
+    + IRR - %
 
 ##Types of Criteria
 
 * Beneficial Criteria
-+ Higher value indicates better
-- e.g. NPV, IRR
+    + Higher value indicates better
+        - e.g. NPV, IRR
 
 * Non-beneficial Criteria
-+ Higher value indicates worse
-- e.g. Cost, Investment
+    + Higher value indicates worse
+        - e.g. Cost, Investment
 
 ##PROMETHEE
 
@@ -59,8 +59,7 @@ Preference Ranking Organization Method for Enrichment of
 Evaluations
 
 - Developed by J.P. Brans and presented for the first time
-in 1982 at a conference organised by R. Nadeau and M. Landry
-at the Universite Laval, Quebec, Canada
+in 1982
 - Obtains a preference function based on pairwise
 differences for each criteria
 - Aggregates using criteria weights to get net outranking
@@ -71,12 +70,12 @@ flow for final ranking
 - Additional information required to use PROMETHEE
 
 + Information within each criterion
-- Through a preference function that eliminates the
+    - Through a preference function that eliminates the
 effect of scale and enables comparability between
 criteria
 
 + Information between the criteria
-- Weights of relative importance
+    - Weights of relative importance
 $\sum_{j=1}^k w_j =1$ where $k$ is the number
 of criteria
 
@@ -126,7 +125,7 @@ min(X_{ij})}$$
 ```{r echo = FALSE}
 data <- readxl::read_excel("data_no_space.xlsx") 
 beneficial_col <- colnames(data)[c(-1,-4)]
-weights <- rep(100/7, 7)
+weights <- rep(1/7, 7)
 
 promethee::normalize(data, beneficial_col) %>% 
   datatableformat() %>% 
@@ -138,14 +137,14 @@ promethee::normalize(data, beneficial_col) %>%
 ##STEP 2: Preference Function
 
 - Pairwise comparisons
-+ $a\succ b$ if alternative $a$ dominates
+    + $a\succ b$ if alternative $a$ dominates
 $b$ for each criteria
-+ $a\sim b$ if alternative $a$ and $b$ have
+    + $a\sim b$ if alternative $a$ and $b$ have
 same value for each criteria
 - In practice, mostly pairwise comparisons are incomparable
-+ $a\succ b$ for some criteria while $a\prec b$
+    + $a\succ b$ for some criteria while $a\prec b$
 for others
-+ e.g. EIYAT $\succ$ GRNYO w.r.t. currency ratio and
+    + e.g. EIYAT $\succ$ GRNYO w.r.t. currency ratio and
 cash ratio while GRNYO $\prec$ EIYAT w.r.t all other
 criteria
 - No single best way to objectively aggregate the information
@@ -290,16 +289,18 @@ s - an intermediate value between q and p
 ##STEP 2: Preference Function
 
 Choosing the appropriate parameters is crucial, though easy
-* **Indifference threshold (q)** is the largest deviation which is
+
+  * **Indifference threshold (q)** is the largest deviation which is
 considered as
 negligible by the decision maker
-* **Preference threshold (p)** is the smallest deviation which is
+
+  * **Preference threshold (p)** is the smallest deviation which is
 considered as sufficient to generate a full preference
 
-* **s** defines the inflection point of the preference function.
-+ If s is close to q, preferences will be reinforced for
+  * **s** defines the inflection point of the preference function.
+    + If s is close to q, preferences will be reinforced for
 small deviations,
-+ If s is close to p, preferences will be softened for
+    + If s is close to p, preferences will be softened for
 small deviations
 
 ##STEP 2: Pairwise Difference
@@ -335,6 +336,23 @@ over all the criteria
 $\pi(b,a)$ expressses how $b$ is preferred to $a$
 
 ##STEP 3: Aggregated Preference Function
+```{r echo = FALSE}
+diff <- promethee::normalize(data, beneficial_col) %>% 
+  promethee::row_wise_difference() %>% 
+  promethee::pref_func()
+
+dplyr::select(diff, c(-1,-2)) %>% 
+  as.matrix(.) %*% base::as.matrix(weights) %>% 
+  as.data.frame() %>% 
+  dplyr::mutate_(P1 = ~ diff[,1], P2 = ~ diff[,2]) %>% 
+  dplyr::select_("P1", "P2", "V1") %>% 
+  dplyr::rename(Aggregated_Preference = V1) %>% 
+  datatableformat() %>% 
+  DT::formatRound(3, 3)
+```
+
+
+##STEP 3: Aggregated Preference Function
 
 General properties of the aggregated preference function $\pi(a,b)$
 $$\pi(a,a)=0$$
@@ -353,11 +371,12 @@ $\pi(a,b)$ close to 1 implies a is strongly preferred over b
 $\implies$ $n-1$ pairs $\pi(a,b)$  for any $a\in A$. 
 
 We take their average to get outranking flows
-**Positive outranking flow** of a $\phi^+(a)$
-- The power or  outranking character of $a$
+
+**Positive outranking flow** of a $\phi^+(a)$  
+- The power or  outranking character of $a$  
 - Average of $\pi(a,x)$ for each $x\neq a$ 
 
-$\rightarrow \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
+$$\rightarrow \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$$
 
 - It expresses how an alternative is outranking all the others
 - The higher $\phi^+(a)$, the better the alternative
@@ -365,16 +384,16 @@ $\rightarrow \phi^+(a) = \frac1{n-1} \sum_{x\in A}\pi(a,x)$
 ##STEP 4: Positive Outranking Flows
 ```{r echo = FALSE}
 outranking <- promethee::flow(
-  data, beneficial_col, "usual", rep(100/7, 7))$outranking_data
+  data, beneficial_col, "usual", rep(1/7, 7))$outranking_data
 
 datatableformat(outranking$positive)
 ```
 
 ##STEP 4: Negative Outranking Flows
-**Negative outranking flow** of a $\phi^+(a)$
-- The weakness or outranked character of $a$
+**Negative outranking flow** of a $\phi^-(a)$  
+- The weakness or outranked character of $a$  
 - Average of $\pi(x,a)$ for each $x\neq a \rightarrow$
-$\phi^-(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$
+$$\phi^-(a) = \frac1{n-1} \sum_{x\in A}\pi(x,a)$$
 
 - It expresses how an alternative is outranked by all the others
 - The lower $\phi^-(a)$, the better the alternative
@@ -420,8 +439,8 @@ b
 - a and b are indifferent if both power and weakness are same
 - a and b are incomparable if a has higher power and higher weakness
 or vice versa
-+ Information provided by both flows is not consistent
-+ Deciding which alternative is better is upto the decision-maker
+    + Information provided by both flows is not consistent
+    + Deciding which alternative is better is upto the decision-maker
 
 
 ##STEP 5: Complete Ranking PROMETHEE II
@@ -429,11 +448,11 @@ or vice versa
 - PROMETHEE II is the balance between positive and negative
 outranking flows
 
-$$\phi(a) = \phi^+(a) - \phi^-(a)$$
+$$\phi(a) = \phi^+(a) - \phi^-(a)$$  
 - $\phi(a)$ is the net outranking flow, with the following
 properties
 
-$-1 \leq \phi(a) \leq 1$ and $\sum_ {x\in A} \phi(a) \leq 1$
+$-1 \leq \phi(a) \leq 1$ and $\sum_ {x\in A} \phi(a) =0$
 where
 
 + $\phi(a) > 0 \implies$ a is more outranking all alternatives
@@ -441,15 +460,14 @@ where
 + $\phi(a) < 0 \implies$ a is more outranked by other
 alternatives
 
-- The higher the net flow, the better the alternative
+The higher the net flow, the better the alternative
 
 ##STEP 5: Complete Ranking PROMETHEE II
 ```{r echo = FALSE}
-promethee::flow(data, beneficial_col, "usual", rep(100/7, 7)) %>% 
+promethee::flow(data, beneficial_col, "usual", rep(1/7, 7)) %>% 
   .$outranking_aggregate_data %>% 
   datatableformat()
 ```
-
 
 ##STEP 5: Complete Ranking PROMETHEE II
 

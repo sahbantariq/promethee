@@ -25,8 +25,16 @@ row_wise_difference <- function(normalized_data) {
     as.data.frame() %>%
     dplyr::rename(P1 = V1, P2 = V2)
 
+  perm_alt <- gtools::permutations(nrow(normalized_data),
+                               2,
+                               as.data.frame(data)[,1]) %>%
+    as.data.frame()
+
+
   # Take differences
   out <- normalized_data[perm[,1], ] - normalized_data[perm[,2],]
 
-  bind_cols(perm, out)
+  bind_cols(perm, out) %>%
+    dplyr::mutate(P1 = perm_alt$V1,
+                  P2 = perm_alt$V2)
 }
