@@ -18,9 +18,6 @@ normalize <- function(data, beneficial_col = NULL) {
     beneficial_col <- beneficial_col
   }
 
-  message("The beneficial criteria are ",
-          list(beneficial_col))
-
   non_beneficial_col <- dplyr::setdiff(
     colnames(data[,-1]), beneficial_col)
 

@@ -85,11 +85,17 @@ of criteria
 ```{r echo = FALSE, results='hide', message=FALSE, warning=FALSE}
 library(dplyr)
 datatableformat <- function(data) {
-  DT::datatable(data, rownames = FALSE, extensions = 'FixedColumns',
-                options = list(
-                  dom = 't',
-                  scrollX = TRUE,
-                  scrollCollapse = TRUE))
+  DT::datatable(data, rownames = FALSE, extensions = c(
+    'FixedColumns', 'ColReorder', 'Scroller'), options = list(
+      colReorder = TRUE, 
+      columnDefs = list(list(className = 'dt-center')),
+      pageLength = 15,
+      dom = 't',
+      scrollX = TRUE,
+      fixedColumns = TRUE,
+      deferRender = TRUE,
+      scrollY = 300,
+      scroller = TRUE))
 }
 ```
 
@@ -120,6 +126,8 @@ min(X_{ij})}$$
 ```{r echo = FALSE}
 data <- readxl::read_excel("data_no_space.xlsx") 
 beneficial_col <- colnames(data)[c(-1,-4)]
+weights <- rep(100/7, 7)
+
 promethee::normalize(data, beneficial_col) %>% 
   datatableformat() %>% 
   DT::formatRound(c(2:8), 3)
@@ -297,10 +305,6 @@ small deviations
 ##STEP 2: Pairwise Difference
 
 ```{r echo = FALSE}
-data <- readxl::read_excel("data_no_space.xlsx") 
-beneficial_col <- colnames(data)[c(-1,-4)]
-weights <- rep(100/7, 7)
-
 promethee::normalize(data, beneficial_col) %>% 
   promethee::row_wise_difference() %>% 
   datatableformat() %>% 
@@ -402,8 +406,9 @@ $$aRb \text{  iff }
 \end{array}$$
 
 ##STEP 5: Partial Ranking PROMETHEE I
-```{r}
-promethee::promethee_one(data, beneficial_col, "usual", weights) %>% 
+```{r echo = FALSE}
+promethee::promethee_one(data, beneficial_col, "usual", 
+                         weights) %>% 
   datatableformat()
 ```
 

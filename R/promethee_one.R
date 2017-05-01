@@ -3,13 +3,14 @@
 #' This function applies Promethee I
 #'
 #' @export
-promethee_one <- function(data, beneficial_col, preference_function, weights) {
+promethee_one <- function(data, beneficial_col, preference_function,
+                          weights) {
 
   alternative <- colnames(data)[1]
 
   flow <- promethee::flow(data,
                           beneficial_col,
-                          "simple", wt)$outranking_aggregate_data %>%
+                          "simple", weights)$outranking_aggregate_data %>%
     select_("-Net_Flow", "-Rank")
 
   comb <- gtools::combinations(nrow(flow), 2, flow[,1]) %>%
