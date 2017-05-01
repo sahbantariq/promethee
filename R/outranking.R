@@ -9,7 +9,7 @@ outranking <- function(pref_func_data){
     dplyr::mutate_(id = ~ as.data.frame(data)[,1]) %>%
     dplyr::rename_(.dots = setNames("id",
                                     colnames(data)[1])) %>%
-    dplyr::select_(colnames(data)[1], ~ 1:ncol(data)) %>%
+    dplyr::select_(colnames(data)[1], ~ 2:ncol(data)) %>%
     mutate_if(is.double, function(x) round(x, 2))
 
   phi_neg <- pref_func_data %>%
@@ -18,7 +18,7 @@ outranking <- function(pref_func_data){
     dplyr::mutate_(id = ~ as.data.frame(data)[,1]) %>%
     dplyr::rename_(.dots = setNames("id",
                                     colnames(data)[1])) %>%
-    dplyr::select_(colnames(data)[1], ~ 1:ncol(data)) %>%
+    dplyr::select_(colnames(data)[1], ~ 2:ncol(data)) %>%
     mutate_if(is.double, function(x) round(x, 2))
 
   list(positive = phi_pos, negative = phi_neg)

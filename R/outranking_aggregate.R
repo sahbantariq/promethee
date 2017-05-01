@@ -2,8 +2,8 @@
 #'
 #' @export
 outranking_aggregate <- function(outranking_data, wt_matrix){
-  outranking_positive <- outranking_data$positive[c(-1,-2)] %>%  as.matrix()
-  outranking_negative <- outranking_data$negative[c(-1,-2)] %>%  as.matrix()
+  outranking_positive <- outranking_data$positive[-1] %>%  as.matrix()
+  outranking_negative <- outranking_data$negative[-1] %>%  as.matrix()
   wt_matrix <- wt_matrix %>% as.matrix()
 
   phi_aggregate_plus <- outranking_positive %*% wt_matrix %>%

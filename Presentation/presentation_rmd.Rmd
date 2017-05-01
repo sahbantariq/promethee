@@ -82,6 +82,7 @@ of criteria
 
 ##PROMETHEE - PROBLEM
 ```{r echo = FALSE, results='hide', message=FALSE, warning=FALSE}
+library(tidyr)
 library(dplyr)
 datatableformat <- function(data) {
   DT::datatable(data, rownames = FALSE, extensions = c(
@@ -476,3 +477,34 @@ considering the difference
 - $\phi(a)$ relies on comparative statements rather than
 absolute statements
 - Recommended to use PROMETHEE I an II together for more information
+
+##GAIA
+
+```{r echo = FALSE}
+promethee::alternative_profile(data, beneficial_col,
+                               preference_function = "simple",
+                               weights, p = 1, q = 0, s = 0.5) %>% 
+  .$single_netflow_criteria %>% 
+  dplyr::mutate_(id = ~ as.data.frame(data)[,1]) %>%
+  dplyr::rename_(.dots = setNames("id",
+                                  colnames(data)[1])) %>% 
+  dplyr::select_(colnames(data)[1], ~ 1:ncol(data)) %>% 
+  datatableformat()
+```
+
+##GAIA
+
+```{r echo = FALSE}
+promethee::alternative_profile_plot(data, beneficial_col,
+                    preference_function = "simple",
+                    weights, p = 1, q = 0, s = 0.5)
+```
+
+##GAIA
+
+```{r echo = FALSE}
+promethee::gaia_plot(data, beneficial_col,
+          preference_function = "simple",
+          weights, p = 1, q = 0, s = 0.5)
+```
+
