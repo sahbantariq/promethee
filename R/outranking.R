@@ -1,5 +1,9 @@
 #' Outranking
 #'
+#' This function calculates the extent to which a variable outranks
+#' other variable and the extent to which it is being outranked by
+#' other variable.
+#'
 #' @export
 outranking <- function(pref_func_data){
 

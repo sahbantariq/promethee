@@ -8,7 +8,6 @@
 #'
 #' @return A dataframe with normalized values
 #'
-#'
 #' @export
 normalize <- function(data, beneficial_col = NULL) {
 
